@@ -1,0 +1,68 @@
+{
+    "name": "slashforward-nl/laravel-subscriptions",
+    "description": "",
+    "type": "library",
+    "keywords": [
+        "plan",
+        "value",
+        "laravel",
+        "feature",
+        "database",
+        "recurring",
+        "subscription"
+    ],
+    "license": "MIT",
+    "homepage": "https://slashforward.nl",
+    "support": {
+        "email": "help@slashforward.nl",
+        "issues": "https://github.com/slashforward-nl/laravel-subscriptions/issues",
+        "source": "https://github.com/slashforward-nl/laravel-subscriptions",
+        "docs": "https://github.com/slashforward-nl/laravel-subscriptions/blob/master/README.md"
+    },
+    "authors": [
+        {
+            "name": "W. Neuteboom",
+            "homepage": "https://slashforward.nl",
+            "email": "w.neuteboom@slashforward.nl"
+        }
+    ],
+    "require": {
+        "php": "^7.4.0 || ^8.0.0",
+        "illuminate/console": "^8.0.0 || ^9.0.0",
+        "illuminate/database": "^8.0.0 || ^9.0.0",
+        "illuminate/support": "^8.0.0 || ^9.0.0",
+        "staudenmeir/eloquent-has-many-deep": "^1.7"
+    },
+    "require-dev": {
+        "codedungeon/phpunit-result-printer": "^0.30.0",
+        "illuminate/container": "^8.0.0 || ^9.0.0",
+        "phpunit/phpunit": "^9.5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Slashforward\\Subscriptions\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Slashforward\\Subscriptions\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "optimize-autoloader": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Slashforward\\Subscriptions\\Providers\\SubscriptionsServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
