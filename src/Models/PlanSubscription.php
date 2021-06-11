@@ -501,6 +501,41 @@ class PlanSubscription extends Model
      *
      * @return bool
      */
+    public function updateFeatureValue(string $uid, string $value)
+    {
+        // We cant use feature if subscription is ended
+        if ( $this->isInactive() ) {
+            return false;
+        }
+
+        $feature = $this->getFeature($uid);
+
+        if ( ! $feature ) {
+            return false;
+        }
+
+        if ( $feature->type == 'bool' ) {
+            $value = (bool) $value;
+        } 
+        elseif ( $feature->type == 'usage' ) {
+            $value = abs( intval( $value ) );
+        }
+
+        $feature->plan_subscription_feature->update([
+            'value' => $value
+        ]);
+
+        return $feature;
+    }
+
+
+    /**
+     * Determine if the feature can be used.
+     *
+     * @param string $featureSlug
+     *
+     * @return bool
+     */
     public function canUseFeature(string $uid, bool $skipUsage = false): bool
     {
         // We cant use feature if subscription is ended
@@ -514,8 +549,12 @@ class PlanSubscription extends Model
             return false;
         }
 
-        if ( $feature->type == 'bool' || $feature->type == "value" ) {
-            return (bool) $feature->value;
+        if ( empty($feature->plan_subscription_feature) ) {
+            return false;
+        }
+
+        if ($feature->type == 'bool' || $feature->type == "value") {
+            return (bool) $feature->plan_subscription_feature->value;
         }
 
         // Counters can go to 0. You can't use it then. Skip the usage check and return true.
@@ -523,7 +562,7 @@ class PlanSubscription extends Model
             return true;
         }
         
-        return $this->getFeatureUsageRemainings($uid) > 0;
+        return $this->getFeatureUsageRemaining($uid) > 0;
     }
 
     public function getFeatureUsage(string $uid): PlanSubscriptionFeatureUsage
@@ -595,7 +634,7 @@ class PlanSubscription extends Model
      *
      * @return int
      */
-    public function getFeatureUsageRemainings(string $uid): int
+    public function getFeatureUsageRemaining(string $uid): int
     {
         $usage = $this->getFeatureUsage($uid);
 
@@ -631,6 +670,6 @@ class PlanSubscription extends Model
     {
         $feature = $this->getFeature($uid);
 
-        return $feature->value ?? null;
+        return $feature->plan_subscription_feature->value ?? null;
     }
 }

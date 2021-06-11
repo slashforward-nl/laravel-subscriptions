@@ -114,7 +114,7 @@ trait HasSubscriptions
      */
     public function subscribeTo(string $uid, Carbon $startDate = null): PlanSubscription
     {
-        $plan = Plan::where('uid', $uid);
+        $plan = Plan::where('uid', $uid)->first();
 
         if (is_null($plan)) {
             throw new \Exception("Plan not found for subscription");
