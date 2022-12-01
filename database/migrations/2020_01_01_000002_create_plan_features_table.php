@@ -15,7 +15,6 @@ class CreatePlanFeaturesTable extends Migration
         Schema::create(config('subscriptions.tables.plan_features'), function (Blueprint $table) {
             // Columns
             $table->bigIncrements('id');
-            $table->foreignId('plan_id');
             $table->string('uid');
             $table->string('name');
             $table->string('value');
@@ -27,9 +26,7 @@ class CreatePlanFeaturesTable extends Migration
             $table->softDeletes();
 
             // Indexes
-            $table->unique(['plan_id', 'uid']);
-            $table->foreign('plan_id')->references('id')->on(config('subscriptions.tables.plans'))
-                  ->onDelete('cascade')->onUpdate('cascade');
+            $table->unique(['uid']);
         });
     }
 

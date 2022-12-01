@@ -61,7 +61,7 @@ class PlanSubscriptionFeature extends Model
             'plan_feature_plan_id',
             'plan_feature_id'
             // 'feature'
-        );
+        )->select('plan_features.*', 'plan_feature_plan.value as user_value');
     }
 
     public function usage()

@@ -114,6 +114,11 @@ trait HasSubscriptions
      */
     public function subscribeTo(string $uid, Carbon $startDate = null): PlanSubscription
     {
+        // Check if we are already subscribed to this plan and is active
+        if($subscription = $this->subscription($uid)) {
+            return $subscription->renew();
+        }
+
         $plan = Plan::where('uid', $uid)->first();
 
         if (is_null($plan)) {

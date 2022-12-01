@@ -17,7 +17,7 @@ class CreatePlanSubscriptionFeatureUsageTable extends Migration
         Schema::create(config('subscriptions.tables.plan_subscription_feature_usage'), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('subscription_feature_id');
-            $table->integer('used')->unsigned();
+            $table->integer('used')->default(0)->unsigned();
             $table->dateTime('valid_until')->nullable();
             $table->timestamps();
 

@@ -395,7 +395,11 @@ class PlanSubscription extends Model
 
         \DB::transaction(function () use ($subscription) {
             // Renew period
-            $subscription->setNewPeriod();
+            $subscription->setNewPeriod(
+                null, 
+                null, 
+                $subscription->ends_at > now() ? $subscription->ends_at : null
+            );
             $subscription->canceled_at = null;
             $subscription->save();
 
@@ -586,8 +590,12 @@ class PlanSubscription extends Model
             {
                 $usage = $feature->plan_subscription_feature->usage()->firstOrNew();
 
+                if (! $usage->id) {
+                    $usage->used = 0;
+                }
+
                 if ($feature->resettable_period) {
-        
+
                     // Set expiration date when the usage record is new or doesn't have one.
                     if (is_null($usage->valid_until)) {
                         // Set date from subscription creation date so the reset
